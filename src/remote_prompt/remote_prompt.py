@@ -51,7 +51,7 @@ class RemotePrompt:
         print(f"GET IMAGE request : {url}")
         try:
             # Open the URL
-            request = requests.get(url, auth=(username, password), stream=True)
+            request = requests.get(url, auth=(self.username, self.password), stream=True)
         except Exception as e:
             print("[ERROR:GET IMAGE]", e)
         # print("GET_IMAGE : ", request.text)   
@@ -65,7 +65,7 @@ class RemotePrompt:
         print(f"HISTORY request : {url}")
         try:
             # Open the URL
-            request = requests.get(url, auth=(username, password))
+            request = requests.get(url, auth=(self.username, self.password))
         except Exception as e:
             print("[ERROR HISTORY]", e)
         print("HISTORY response : ", request.json())   
@@ -101,17 +101,3 @@ class RemotePrompt:
         return output_images
 
 
-url = 'YOUR COMFYUI URL WITHOUT http://'
-username = 'YOUR USER NAME'
-password = 'YOUR PASSWORD'
-json_path = "workflow_api.json"
-
-
-remote = RemotePrompt(url, json_path, username, password)
-
-images = remote.get_images()
-
-for node_id in images:
-    for filename, image_data in images[node_id]:
-        with open(filename, "wb") as f:
-            f.write(image_data)
