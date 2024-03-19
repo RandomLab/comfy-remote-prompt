@@ -14,9 +14,9 @@ def basic_auth_header(username, password):
 
 class RemotePrompt:
 
-    def __init__(self, url, json_path, username, password):
+    def __init__(self, url, workflow_data, username, password):
         self.url = "http://" + url
-        self.json_path = json_path
+        # self.json_path = json_path
         self.username = username
         self.password = password
         self.prompt_url = self.url + "/prompt"
@@ -28,10 +28,8 @@ class RemotePrompt:
                    header={"Authorization": "Basic " + basic_auth_header(self.username, self.password)})
         
 
-        # Open the workflow json file
-        with open(self.json_path, "r", encoding="utf-8") as f:
-            workflow_data = f.read()
-        self.prompt = json.loads(workflow_data)
+        # self.prompt = json.loads(workflow_data)
+        self.prompt = workflow_data
 
     def queue_prompt(self):
         p = {"prompt": self.prompt, "client_id": self.client_id}
