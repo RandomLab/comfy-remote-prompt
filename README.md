@@ -33,4 +33,9 @@ for node_id in images:
         with open(filename, 'wb') as f:
             f.write(image_data)
 
+# Upload an image
+with open("example.png", "rb") as f:
+    comfyui_path_image = remote.upload_file(f, "", True)
+
+
 ```

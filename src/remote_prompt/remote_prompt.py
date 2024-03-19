@@ -98,4 +98,32 @@ class RemotePrompt:
 
         return output_images
 
+    def upload_file(self, file, subfolder="", overwrite=False):
+        # Wrap file in formdata so it includes filename
+        body = {"image": open(file, "rb")}
+        data = {}
+
+        if overwrite:
+            data["overwrite"] = "true"
+
+        if subfolder:
+            data["subfolder"] = subfolder
+
+        url = f"{self.url}/upload/image"
+        print(f"UPLOAD request : {url}")
+        try:
+            # Open the URL
+            request = requests.post(url, auth=(self.username, self.password), files=body, data=data)
+        except Exception as e:
+            print("[ERROR UPLOAD]", e)
+        print("UPLOAD response : ", request.json())   
+        data = request.json()
+        # Add the file to the dropdown list and update the widget value
+        path = data["name"]
+        if "subfolder" in data:
+            if data["subfolder"] != "":
+                path = data["subfolder"] + "/" + path
+
+        return path
+
 
