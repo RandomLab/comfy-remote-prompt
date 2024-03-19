@@ -22,7 +22,11 @@ url = 'YOUR COMFYUI URL WITHOUT http://'
 username = 'YOUR USER NAME'
 password = 'YOUR PASSWORD'
 json_path = 'workflow_api.json'
-remote = RemotePrompt(url, json_path, username, password)
+
+with open(json_path, "r", encoding="utf-8") as f:
+    workflow_data = json.load(f)
+
+remote = RemotePrompt(url, workflow_data, username, password)
 images = remote.get_images()
 for node_id in images:
     for filename, image_data in images[node_id]:
